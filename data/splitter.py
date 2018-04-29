@@ -1,5 +1,6 @@
 import numpy as np
 
+
 a = np.arange(12811)
 np.random.shuffle(a)
 
