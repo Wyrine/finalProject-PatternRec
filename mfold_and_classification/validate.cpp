@@ -46,7 +46,7 @@ Validation::varykNN(const uint valStep, const uint dist)
 		string fName = string("kNN_validation") + to_string(valStep) + string(".csv");
 		out = openFile(fName.c_str());
 		writeHeader(classes, out, 1);
-		
+
 		for(int k = 1; k < MAX_K_NEIGHBORS; k+=2)
 				for(int d = 1; d < MAX_DIST; d++)
 						runkNN(0, k, d, out);

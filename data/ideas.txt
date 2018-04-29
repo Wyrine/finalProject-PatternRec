@@ -1,0 +1,3 @@
+Number of samples: 12811
+Idea: Number of folds = 23? 
+
