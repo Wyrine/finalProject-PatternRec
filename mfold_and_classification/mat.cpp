@@ -157,9 +157,12 @@ Mat::getSamp(ifstream &input, double samp[])
 
 		for(i = 0; i < features && (input >> samp[i]); i++);
 		if( i < features) return false;
-
-		input >> tmp;
-		samp[i] = compFunc(tmp);
+		if(compFunc != nullptr)
+		{
+				input >> tmp;
+				samp[i] = compFunc(tmp);
+		}
+		else input >> samp[i];
 
 		return true;
 }
