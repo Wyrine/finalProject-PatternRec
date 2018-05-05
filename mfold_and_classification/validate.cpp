@@ -3,6 +3,7 @@
 
 using namespace std;
 
+//dataFile, m-fold groupings file, numb folds, num features, and num classes
 Validation::Validation(const char* data, const char* grp, const uint _m, 
 				const uint _f, const uint _c)
 {
@@ -18,10 +19,12 @@ Validation::Validation(const char* data, const char* grp, const uint _m,
 Validation::validate(const uint m)
 {
 		vector<Sample> test, train;
+		//iterate through the different groups
 		for(int i=0; i< groups.size(); i++)
 		{
-				//i is the group that is the test set
+				//iterate and choose a group as the test set
 				for(int j = 0; j< groups.size(); j++)
+						//build the matrix of this data set
 						for(int k = 0; k < groups[j].size(); k++)
 						{
 								if(j == i) //current test set
@@ -29,14 +32,24 @@ Validation::validate(const uint m)
 								else //current training set
 										train.push_back(dataSet[ groups[j][k] ]);
 						}
+				cerr << "building matrix" << endl;
+				//build the training and test matrices
 				buildMatrix(test, Xte); test.clear();
 				buildMatrix(train, X); train.clear();
+				cerr << "cropping matrix" << endl;
+				//crop the labels out
 				nXte = cropMatrix(Xte, 0, Xte.getRow(), 0, Xte.getCol()-1);
 				nX = cropMatrix(X, 0, X.getRow(), 0, X.getCol()-1);
+				cerr << "normalizing matrix" << endl;
+				//normalize them
 				normalize(nX, nXte, features, 1);
+				//re-add the labels
+				cerr << "adding labels" << endl;
 				addLabels(nX, X);
 				addLabels(nXte, Xte);
+				cerr << "calling kNN" << endl;
 				varykNN(i+1, 2);
+				cerr << "done with kNN in iteration " << i << endl;
 		}
 }
 		void
@@ -52,12 +65,14 @@ Validation::varykNN(const uint valStep, const uint dist)
 						runkNN(0, k, d, out);
 		fclose(out);
 }
+
+//assumes the grouping file is white space delimitted for columns
+//and any other kind of delimitter for rows
 		void
 Validation::readGroupingFile(const char* grp)
 {
-		char junk;
+		char junk; short curVal;
 		vector<short> curLine;
-		short curVal;
 		ifstream input(grp);
 		if(! input.is_open() )
 		{
@@ -71,7 +86,7 @@ Validation::readGroupingFile(const char* grp)
 						//decrement to use it as index
 						curLine.push_back(curVal - 1);
 						//check if next character is a space, if it is then data is good
-						//if it's any other character then it's not
+						//if it's any other character then the row has been read in
 				}while( isspace(input.peek()) );
 				groups.push_back(curLine);
 				curLine.clear();
@@ -91,7 +106,9 @@ Validation::readAndBuildMatrix(const char* data)
 				cerr << "Failed to open " << data << ". Exiting." << endl;
 				exit(1);
 		}
+		//get the label titles
 		getline(input, line);
+		//get each label and push back the new sample
 		while( getSamp(input, tmp) )
 		{
 				Sample s(features, tmp);
@@ -102,8 +119,7 @@ Validation::readAndBuildMatrix(const char* data)
 		double
 Validation::mComp(const int _cur)
 {
-		//scale the classes to be from 0 through (class - 1)
-		return (_cur > 3) ? _cur - 2 : _cur - 1;
+		return (double) _cur;
 }
 		bool
 Validation::getSamp(ifstream & input, double samp[])

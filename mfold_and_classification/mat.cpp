@@ -16,9 +16,9 @@ Mat::Mat(const char* tr, const char* te, const uint& _features,
 		nX = subMatrix(X, 0, 0, X.getRow() -1, features - 1);
 		nXte = subMatrix(Xte, 0, 0, Xte.getRow() -1, features -1);
 		normalize(nX, nXte, features, 1);
-
+		//set up the mean and sig of the normalized data set
+		//for each class
 		setParams(mu, sig, nX, nXte);
-		PCA(); FLD();
 }
 		void
 Mat::generateEvals(const Matrix & results, const void* arg, FILE* out, const uint flag)
@@ -66,6 +66,7 @@ Mat::generateEvals(const Matrix & results, const void* arg, FILE* out, const uin
 		fprintf(out, "%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf\n", tp, tn, fp, fn,
 						accuracy, sens, spec, precision);
 }
+//build probability matrix from results (basically the confusion matrix converted to probabilities)
 Matrix
 Mat::getProbMatrix(const Matrix & result) const
 {
@@ -157,9 +158,12 @@ Mat::getSamp(ifstream &input, double samp[])
 
 		for(i = 0; i < features && (input >> samp[i]); i++);
 		if( i < features) return false;
-
-		input >> tmp;
-		samp[i] = compFunc(tmp);
+		if(compFunc != nullptr)
+		{
+				input >> tmp;
+				samp[i] = compFunc(tmp);
+		}
+		else input >> samp[i];
 
 		return true;
 }
@@ -274,29 +278,6 @@ Mat::runCase1(const double prior[])
 		cout << "Normalized X: \n";
 		generateEvals(rv, prior);
 		predictions.push_back(rv);
-
-		tmpSig.clear();
-		rv.createMatrix(pXte.getRow(), 1);
-		identity = Identity(pXte.getCol() -1);
-
-		for(int i = 0; i < classes; i++)
-				tmpSig.push_back( sqrt(pSig[1](0, 0) ) * identity );
-		MPP(pXte, prior, tmpSig, pMu, rv);
-		cout << "PCA: \n";
-		generateEvals(rv, prior);
-		predictions.push_back(rv);
-
-
-		tmpSig.clear();
-		rv.createMatrix(fXte.getRow(), 1);
-		identity = Identity(1);
-		for(int i = 0; i < classes; i++)
-				tmpSig.push_back( sqrt( mtod(fSig[1]) ) * identity );
-		MPP(fXte, prior, tmpSig, fMu, rv);
-		cout << "FLD: \n";
-		generateEvals(rv, prior);
-		predictions.push_back(rv);
-
 		cout << "\n\n\n\n\n";
 }
 		void

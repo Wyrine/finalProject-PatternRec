@@ -44,8 +44,8 @@ class Mat
 {
 		protected:
 				uint classes, features;
-				Matrix X, nX, Xte, nXte;
-				vector<Matrix> mu, sig;
+				Matrix X, nX, Xte, nXte, pX, pXte, fX, fXte, fW;
+				vector<Matrix> mu, sig, pMu, pSig, fMu, fSig;
 
 				//index 0-2: case 1_norm, case 1_PCA, case 1_FLD
 				//index 3-5: case 2_norm, case 2_PCA, case 2_FLD
@@ -88,7 +88,7 @@ class Mat
 				virtual double prior0() { return ((double) getType(X, 0).getRow() ) / X.getRow(); }
 				virtual double prior1() { return ((double) getType(X, 1).getRow() ) / X.getRow(); }
 				Mat(const char*, const char*, const uint&, const uint&, 
-								double (*_compFunc)(const string &));
+								double (*_compFunc)(const string &) = nullptr);
 				virtual void fuseNB_All();
 				virtual void varyCase1();
 				virtual void varyCase2();

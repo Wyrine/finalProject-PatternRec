@@ -4,14 +4,12 @@ CXXFLAGS = -O2 -g -Wall -I$(INCLUDES)
 LIBS = $(INCLUDES)/libmatrix.a
 EXECUTABLES = driver
 HEADERS = mat.hpp validate.hpp
-RESULT = performance
 
 all: $(EXECUTABLES)
 
 .PHONY: clean
 clean:
 		@rm -f core $(EXECUTABLES) *.o *.txt
-		@rm -rf $(RESULT)
 
 #.SUFFIXES: .cpp .o
 #.cpp.o:
@@ -28,4 +26,3 @@ driver.o: mat.cpp validate.cpp $(HEADERS)
 
 driver: validate.o mat.o driver.o
 		@$(CXX) -g -o driver mat.o validate.o driver.o $(LIBS)
-		@mkdir $(RESULT)
