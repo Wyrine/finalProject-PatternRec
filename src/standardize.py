@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+#!/usr/local/bin/python3
 import numpy as np
 
 def standard(train, test):
@@ -10,6 +10,6 @@ def standard(train, test):
 if __name__ == "__main__":
     tr = [0, 1, 2]
     te = [0, 5, 7]
-    tr,te = normal(tr, te)
-    print tr
-    print te
+    tr,te = standard(tr, te)
+    print(tr)
+    print(te)
