@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3
 import numpy as np
 import math
+from sys import exit
 
 def MPP(tr, te, trLabels, case, priors = None):
 		""" takes the training set, testing set,
@@ -12,7 +13,7 @@ def MPP(tr, te, trLabels, case, priors = None):
 		classes = [ [], [] ]
 		#splitting up the two class training sets
 		for row, c in zip(tr, trLabels):
-				classes[int(c)].append(np.array(row))
+				classes[c].append(row)
 		means, sigs = [], []
 		#calculating mean and covariance matrices for each class
 		for c in classes:
@@ -42,7 +43,7 @@ def MPP(tr, te, trLabels, case, priors = None):
 		#as well as the determinants
 		sigInv, dets = [], []
 		for s in sigs:
-				sigInv.append(np.inv(s))
+				sigInv.append(np.linalg.inv(s))
 				dets.append(np.linalg.det(s))
 		#1/(2*pi)
 		piConst = 1/(2 * math.pi)
