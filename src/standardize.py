@@ -2,8 +2,8 @@
 import numpy as np
 
 def standard(train, test):
-    test = (test - np.mean(train)) / np.std(train)
-    train = (train - np.mean(train)) / np.std(train)
+    test = (test - np.mean(train, axis=0)) / np.std(train, axis=0)
+    train = (train - np.mean(train, axis=0)) / np.std(train, axis=0)
     return train, test
 
 #test
