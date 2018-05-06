@@ -1,3 +1,12 @@
+import sys
+import numpy as np
+
+def euc(A, B, n = 3):
+		dist = 0
+		for i in range(n):
+				dist += (A[i] - B[i]) ** 2
+		return dist ** (1/2)
+
 def kmeans(k, dat, col):
     '''
     returns the membership of each the samples passed in
@@ -14,7 +23,7 @@ def kmeans(k, dat, col):
 	    min = sys.maxint
 	    #find closest mean
 	    for m in range(len(means)): #each mean
-		dist = __euc(dat[j],means[m])
+		dist = euc(dat[j],means[m],col)
 		if dist < min:
 		    #changed = True
 		    min = dist
