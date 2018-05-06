@@ -17,16 +17,16 @@ class Validate:
 								tmp = line.replace("\n", "").split()
 								if self.folds is None:
 										self.folds = np.zeros( ( m, len(tmp)) )
-								self.folds[i, :] = np.array(tmp).astype(np.float64)
+								self.folds[i, :] = np.array(tmp).astype(np.int)
 								i += 1
 		def getTest(self, i):
 				""" get the test fold set which is index i """
-				return self.folds[i, :]
+				return self.folds[i, :].astype(np.int).flatten()
 		def getFoldCount(self): 
 				return self.m
 		def getTrain(self, i):
 				""" get all of the other folds excluding index i """
-				return np.delete(np.array(self.folds), i, 0)
+				return np.delete(np.array(self.folds), i, 0).astype(np.int).flatten()
 
 def main():
 		valid = Validate("../data/folds.grp", 23)

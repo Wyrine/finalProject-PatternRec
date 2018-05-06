@@ -14,4 +14,4 @@ def buildData(fName):
 						except:
 								pass
 		rv = np.array(rv)
-		return rv[:, :-1], rv[:, -1]
+		return rv[:, :-1], rv[:, -1].astype(np.int)
