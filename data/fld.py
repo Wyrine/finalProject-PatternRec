@@ -10,7 +10,8 @@ returns the FLD projection matrix
         else:
             mat1.append(tr[i])
 
-    sInv = ((len(mat0)-1)  * np.cov(mat0)) + ((len(mat1)-1) * np.cov(mat1))
+    #compute scatter
+    sInv = ((len(mat0)-1)  * np.cov(mat0,rowvar=False)) + ((len(mat1)-1) * np.cov(mat1,rowvar=False))
     sInv = np.linalg.inv(sInv)
 
-    return sInv * (np.mean(mat0) - np.mean(mat1))
+    return np.matmul(sInv, (np.mean(mat0,axis=0) - np.mean(mat1,axis=0)))

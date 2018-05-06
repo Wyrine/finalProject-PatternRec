@@ -1,8 +1,9 @@
 import numpy as np
-'''
-returns the number of eigenvectors to drop, given tolerance
-'''
+
 def pca(tr, tol):
+    '''
+    returns the number of eigenvectors to drop, given tolerance
+    '''
     c = np.cov(tr)
     eigs,vec = np.linalg.eig(tr)
     tot = float(sum(eigs))
