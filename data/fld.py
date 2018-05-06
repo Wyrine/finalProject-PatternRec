@@ -1,7 +1,7 @@
+def fld(tr, tr_class):
 '''
 returns the FLD projection matrix
 '''
-def fld(tr, tr_class):
     mat0 = []
     mat1 = []
     for i in range(len(tr)):

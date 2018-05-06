@@ -31,7 +31,6 @@ def kNN_Validate(dataName, grpName, folds, k = 3, d = 2):
 				trainSet, testSet = standard(trainSet, testSet)
 				#classify test set and add it to the results list
 				results.append((knn.kNN(trainSet, testSet, trainLabels, k, d), testLabels))
-				print(results[-1][0])
 		return results	
 
 kNN_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23)
