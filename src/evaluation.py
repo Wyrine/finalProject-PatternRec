@@ -2,6 +2,11 @@
 import numpy as np
 
 def rocData(conMat):
+		"""
+				returns a dictionary built from the normalized confusion matrix
+				with keys as follows:
+						TN, TP, FP, FN, Acc, Sens, Spec, and Prec
+		"""
 		rv = {}
 		tp, tn, fp, fn = conMat[1,1], conMat[0,0], conMat[0,1], conMat[1,0]
 		rv["TN"] =  tn
@@ -15,6 +20,10 @@ def rocData(conMat):
 		return rv
 		
 def getAvgProbMatrix(normMat):
+		"""
+				Iterates through the normalized matrices and computes one avg
+				matrix and return that average
+		"""
 		rv = np.zeros((2,2), dtype=np.float64)
 		for mat in normMat:
 				rv += mat
@@ -33,9 +42,13 @@ def buildConfusionMatrices(results):
 		return rv
 
 def normalizeConfMat(conMat):
+		"""
+				normalizes all confusion matrices in the conMat array and
+				returns the new matrix array
+		"""
 		for i, mat in enumerate(conMat):
 				divisor = 0
-				for a in conMat:
+				for a in mat:
 						divisor += np.sum(a)
-				conMat[i,:] /= divisor
+				conMat[i] = conMat[i] /divisor
 		return conMat
