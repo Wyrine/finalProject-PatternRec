@@ -52,3 +52,8 @@ def kmeans(k=2, dat, col):
     for i in range(len(membership)):
         out.append(means[int(membership[i])])
     return out
+
+def cluster(tr, te, tr_class):
+    pred = kmeans(2,tr,len(data[0,:]))
+    print pred
+    print tr_class
