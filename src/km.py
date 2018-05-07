@@ -7,9 +7,16 @@ def euc(A, B, n = 3):
 				dist += (A[i] - B[i]) ** 2
 		return dist ** (1/2)
 
-def kmeans(k, dat, col):
+def kmeans(k=2, dat, col):
     '''
-    returns the membership of each the samples passed in
+    params
+        k: the number of clusters
+        dat: dataset
+        col: the number of features
+    objective
+        cluster in to k seperate clusters
+    returns
+        the membership of each the samples passed in
     '''
     #assume standardized values
     means = np.random.uniform(-2,2,k*col) #cluster centers

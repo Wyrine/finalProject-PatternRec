@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 from sklearn import tree
 
-def dtree(tr, tr_class, te):
+def dtree(tr, te, tr_class):
 		'''
 				returns the predicted class of the test samples
 		'''
