@@ -5,21 +5,20 @@ from buildData import buildData as bd
 from mpp import MPP
 import validation as vd
 import evaluation as ev
-from pca import pca
 import sys
 
-def MPP_Validate(dataName, grpName, folds, trans = None, case = 3):
+def MPP_Validate(dataName, grpName, folds, case = 3, priors = None, trans = None):
 		"""
 				params: dataName := file with the data set
 								grpName  := file with the different groupings
 								folds		 := number of folds
+								trans := transformation function to do dimensionality reduction
 								case		 := case of the discriminant function to use
 														defaulted to case 3
-								trans := transformation function to do dimensionality reduction
+								priors := the prior probabilities for the two classes. Defaulted to None
 				objective: performs cross validation using mpp as classifier
 										with the discriminant function cases
-				returns: a list of tuples organized as (test_predicted, test_groundTruth)
-
+				returns: a dictionary with performance evaluation data 
 		"""
 		valid = vd.Validate(grpName, folds)
 		data, labels = bd(dataName)
@@ -40,11 +39,12 @@ def MPP_Validate(dataName, grpName, folds, trans = None, case = 3):
 				#standardize the training and test set
 				trainSet, testSet = standard(trainSet, testSet)
 				#classify test set and add it to the results list
-				results.append((MPP(trainSet, testSet, trainLabels, case), testLabels))
-		tmp = ev.buildConfusionMatrices(results)	
-		tmp = ev.normalizeConfMat(tmp)
-		tmp = ev.getAvgProbMatrix(tmp)
-		print(ev.rocData(tmp)["Acc"])
+				results.append((MPP(trainSet, testSet, trainLabels, case, priors), testLabels))
+		results = ev.buildConfusionMatrices(results)	
+		results = ev.normalizeConfMat(results)
+		results = ev.getAvgProbMatrix(results)
+		results = ev.rocData(results)
+		print(results["Acc"])
 		return results	
 		
-MPP_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, pca, 3)
+MPP_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, 3)
