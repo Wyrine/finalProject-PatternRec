@@ -48,7 +48,7 @@ def normalizeConfMat(conMat):
 		"""
 		for i, mat in enumerate(conMat):
 				divisor = 0
-				for a in conMat:
+				for a in mat:
 						divisor += np.sum(a)
-				conMat[i,:] /= divisor
+				conMat[i] = conMat[i] /divisor
 		return conMat
