@@ -5,14 +5,17 @@ from buildData import buildData as bd
 from mpp import MPP
 import validation as vd
 import evaluation as ev
+from pca import pca
+import sys
 
-def MPP_Validate(dataName, grpName, folds, case = 3):
+def MPP_Validate(dataName, grpName, folds, trans = None, case = 3):
 		"""
 				params: dataName := file with the data set
 								grpName  := file with the different groupings
 								folds		 := number of folds
 								case		 := case of the discriminant function to use
 														defaulted to case 3
+								trans := transformation function to do dimensionality reduction
 				objective: performs cross validation using mpp as classifier
 										with the discriminant function cases
 				returns: a list of tuples organized as (test_predicted, test_groundTruth)
@@ -29,6 +32,11 @@ def MPP_Validate(dataName, grpName, folds, case = 3):
 				testSet, testLabels = data[testIndex, :], labels[testIndex]
 				#build the train set and training labels
 				trainSet, trainLabels = data[trainIndex, :], labels[trainIndex]
+				#if the data is to be transformed
+				if trans is not None:
+						tmp = trans(trainSet).transpose()
+						trainSet = np.matmul(trainSet, tmp)
+						testSet = np.matmul(testSet, tmp)
 				#standardize the training and test set
 				trainSet, testSet = standard(trainSet, testSet)
 				#classify test set and add it to the results list
@@ -39,4 +47,4 @@ def MPP_Validate(dataName, grpName, folds, case = 3):
 		print(ev.rocData(tmp)["Acc"])
 		return results	
 		
-MPP_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, 2)
+MPP_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, pca, 3)
