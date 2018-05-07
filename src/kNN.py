@@ -29,7 +29,6 @@ def kNN(train, test, trainLabels, k, d = 2):
 		rv = []
 		i, tot = 0, len(test)
 		for te in test:
-				print("Iteration: %d of %d" %(i, tot))
 				rv.append(kNN_Classify(train, te, trainLabels, k, d))
 				i += 1
 		return rv

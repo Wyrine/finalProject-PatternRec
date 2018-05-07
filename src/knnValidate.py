@@ -21,6 +21,7 @@ def kNN_Validate(dataName, grpName, folds, k = 3, d = 2):
 		data, labels = bd(dataName)
 		results = [] #stores tuples: (list_predicted, list_groundTruth)
 		for i in range(valid.getFoldCount()):
+				print("kNN iteration %d" % i)
 				#get the train and test indices of the data set
 				testIndex, trainIndex = valid.getTest(i), valid.getTrain(i)
 				#build the test set and test labels
@@ -31,6 +32,10 @@ def kNN_Validate(dataName, grpName, folds, k = 3, d = 2):
 				trainSet, testSet = standard(trainSet, testSet)
 				#classify test set and add it to the results list
 				results.append((knn.kNN(trainSet, testSet, trainLabels, k, d), testLabels))
+		tmp = ev.buildConfusionMatrices(results)	
+		tmp = ev.normalizeConfMat(tmp)
+		tmp = ev.getAvgProbMatrix(tmp)
+		print("%d-NN Accuracy: %f" % (k, ev.rocData(tmp)["Acc"]))
 		return results	
 
 kNN_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23)

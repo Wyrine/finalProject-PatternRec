@@ -39,4 +39,4 @@ def MPP_Validate(dataName, grpName, folds, case = 3):
 		print(ev.rocData(tmp)["Acc"])
 		return results	
 		
-MPP_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23)
+MPP_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, 2)
