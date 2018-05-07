@@ -1,9 +1,10 @@
-#!/usr/local/bin/python3
+#!/usr/local/bin/python2
 import numpy as np
 from standardize import standard
 from buildData import buildData as bd
 import bpnn 
 import validation as vd
+import evaluation as ev
 
 def bpnn_Validate(dataName, grpName, folds): 
 		""" 
@@ -28,6 +29,10 @@ def bpnn_Validate(dataName, grpName, folds):
 				trainSet, testSet = standard(trainSet, testSet)
 				#classify test set and add it to the results list
 				results.append((bpnn.nn(trainSet, testSet, trainLabels), testLabels))
+		tmp = ev.buildConfusionMatrices(results)    
+                tmp = ev.normalizeConfMat(tmp)
+                tmp = ev.getAvgProbMatrix(tmp)
+                print("%d-NN Accuracy: %f" % (k, ev.rocData(tmp)["Acc"]))
 		return results  
 
 bpnn_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 

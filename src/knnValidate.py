@@ -1,9 +1,10 @@
-#!/usr/local/bin/python3
+#!/usr/local/bin/python2
 import numpy as np
 from standardize import standard
 from buildData import buildData as bd
 import kNN as knn
 import validation as vd
+import evaluation as ev
 
 def kNN_Validate(dataName, grpName, folds, k = 3, d = 2):
 		"""
