@@ -1,3 +1,6 @@
+#!/usr/local/bin/python3
+import numpy as np
+
 def fld(tr, tr_class):
 '''
 returns the FLD projection matrix
