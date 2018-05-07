@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/local/bin/python2
 import numpy as np
 from standardize import standard
 from buildData import buildData as bd

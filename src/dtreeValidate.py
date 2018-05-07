@@ -2,11 +2,11 @@
 import numpy as np
 from standardize import standard
 from buildData import buildData as bd
-import bpnn 
+import dtree 
 import validation as vd
 import evaluation as ev
 
-def bpnn_Validate(dataName, grpName, folds): 
+def dtree_Validate(dataName, grpName, folds): 
     """ 
         params: 
             dataName := file with the data set
@@ -28,11 +28,11 @@ def bpnn_Validate(dataName, grpName, folds):
         #standardize the training and test set
         trainSet, testSet = standard(trainSet, testSet)
         #classify test set and add it to the results list
-        results.append((bpnn.nn(trainSet, testSet, trainLabels), testLabels))
+        results.append((dtree.dtree(trainSet, testSet, trainLabels), testLabels))
     tmp = ev.buildConfusionMatrices(results)    
     tmp = ev.normalizeConfMat(tmp)
     tmp = ev.getAvgProbMatrix(tmp)
-    print("bpnn Accuracy: %f" % (ev.rocData(tmp)["Acc"]))
+    print("dtree Accuracy: %f" % (ev.rocData(tmp)["Acc"]))
     return results  
 
-bpnn_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 
+dtree_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 

@@ -1,4 +1,3 @@
-#!/usr/local/bin/python3
 from sklearn.neural_network import MLPClassifier
 
 def nn(tr, te, tr_class):
