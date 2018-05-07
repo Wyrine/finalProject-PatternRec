@@ -2,7 +2,7 @@
 import numpy as np
 from standardize import standard
 from buildData import buildData as bd
-import dtree 
+import km 
 import validation as vd
 import evaluation as ev
 from fld import fld
@@ -29,7 +29,7 @@ def dtree_Validate(dataName, grpName, folds):
         #standardize the training and test set
         trainSet, testSet = standard(trainSet, testSet)
         #classify test set and add it to the results list
-        results.append((dtree.dtree(trainSet, testSet, trainLabels), testLabels))
+        results.append((km.kmeans(trainSet, testSet, trainLabels), testLabels))
     tmp = ev.buildConfusionMatrices(results)    
     tmp = ev.normalizeConfMat(tmp)
     tmp = ev.getAvgProbMatrix(tmp)

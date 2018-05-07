@@ -2,9 +2,9 @@
 import numpy as np
 
 def fld(tr, tr_class):
-'''
-returns the FLD projection matrix
-'''
+    '''
+    returns the FLD projection matrix
+    '''
     mat0 = []
     mat1 = []
     for i in range(len(tr)):
