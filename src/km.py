@@ -2,10 +2,10 @@ import sys
 import numpy as np
 
 def euc(A, B, n = 10):
-		dist = 0
-		for i in range(n):
-				dist += (A[i] - B[i]) ** 2
-		return dist ** (1/2)
+    dist = 0
+    for i in range(n):
+	dist += (A[i] - B[i]) ** 2
+    return dist ** (1/2)
 
 def kmeans(k=2, dat, col):
     '''
@@ -24,7 +24,7 @@ def kmeans(k=2, dat, col):
 
     for i in range(0, 50):
 	#for each point, assign to nearest cluster
-	print 'iter: ', i
+	print( 'iter: ', i)
 	for j in range(0, len(dat)):
 	    mindex = -1
 	    min = sys.maxint

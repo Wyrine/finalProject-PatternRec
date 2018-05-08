@@ -29,11 +29,11 @@ def dtree_Validate(dataName, grpName, folds):
         #standardize the training and test set
         trainSet, testSet = standard(trainSet, testSet)
         #classify test set and add it to the results list
-        results.append((km.kmeans(trainSet, testSet, trainLabels), testLabels))
+        results.append((km.cluster(trainSet, testSet, trainLabels), testLabels))
     tmp = ev.buildConfusionMatrices(results)    
     tmp = ev.normalizeConfMat(tmp)
     tmp = ev.getAvgProbMatrix(tmp)
-    print("dtree Accuracy: %f" % (ev.rocData(tmp)["Acc"]))
+    print("KM+MD Accuracy: %f" % (ev.rocData(tmp)["Acc"]))
     return results  
 
 dtree_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 
