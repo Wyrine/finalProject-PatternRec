@@ -7,33 +7,33 @@ import validation as vd
 import evaluation as ev
 from fld import fld
 
-def dtree_Validate(dataName, grpName, folds): 
-    """ 
+def km_Validate(dataName, grpName, folds): 
+		""" 
         params: 
             dataName := file with the data set
             grpName := file with the different groupings
             folds := number of folds
         objective: performs cross validation using neural net as classifier
         returns: a list of tuples organized as (test_predicted, test_groundTruth)
-    """
-    valid = vd.Validate(grpName, folds)
-    data, labels = bd(dataName)
-    results = [] #stores tuples: (list_predicted, list_groundTruth)
-    for i in range(valid.getFoldCount()):
-        #get the train and test indices of the data set
-        testIndex, trainIndex = valid.getTest(i), valid.getTrain(i)
-        #build the test set and test labels
-        testSet, testLabels = data[testIndex, :], labels[testIndex]
-        #build the train set and training labels
-        trainSet, trainLabels = data[trainIndex, :], labels[trainIndex]
-        #standardize the training and test set
-        trainSet, testSet = standard(trainSet, testSet)
-        #classify test set and add it to the results list
-        results.append((km.cluster(trainSet, testSet, trainLabels), testLabels))
-    tmp = ev.buildConfusionMatrices(results)    
-    tmp = ev.normalizeConfMat(tmp)
-    tmp = ev.getAvgProbMatrix(tmp)
-    print("KM+MD Accuracy: %f" % (ev.rocData(tmp)["Acc"]))
-    return results  
+		"""
+		valid = vd.Validate(grpName, folds)
+		data, labels = bd(dataName)
+		results = [] #stores tuples: (list_predicted, list_groundTruth)
+		for i in range(valid.getFoldCount()):
+				#get the train and test indices of the data set
+				testIndex, trainIndex = valid.getTest(i), valid.getTrain(i)
+				#build the test set and test labels
+				testSet, testLabels = data[testIndex, :], labels[testIndex]
+				#build the train set and training labels
+				trainSet, trainLabels = data[trainIndex, :], labels[trainIndex]
+				#standardize the training and test set
+				trainSet, testSet = standard(trainSet, testSet)
+				#classify test set and add it to the results list
+				results.append((km.cluster(trainSet, testSet, trainLabels), testLabels))
+		tmp = ev.buildConfusionMatrices(results)    
+		tmp = ev.normalizeConfMat(tmp)
+		tmp = ev.getAvgProbMatrix(tmp)
+		print("KM+MD Accuracy: %f" % (ev.rocData(tmp)["Acc"]))
+		return results  
 
-dtree_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 
+#km_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 

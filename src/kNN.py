@@ -30,7 +30,6 @@ def kNN(train, test, trainLabels, k, d = 2):
 		rv = []
 		i, tot = 0, len(test)
 		for te in test:
-				print("Iteration %d of %d" % (i, tot))
 				rv.append(kNN_Classify(train, te, trainLabels, k, d))
 				i += 1
 		return rv
@@ -40,8 +39,6 @@ def kNN_Classify(train, te, trainLabels, k, d):
 				classifies a test sample based on the k nearest neighbors
 		"""
 		dists = []
-		#initialize the first k samples in the training set in the
-		#training set
 
 		for tr, c in zip(train, trainLabels):
 				dists.append((minkowski(tr, te, d), c))

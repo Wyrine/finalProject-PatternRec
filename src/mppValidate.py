@@ -47,4 +47,4 @@ def MPP_Validate(dataName, grpName, folds, case = 3, priors = None, trans = None
 		print(results["Acc"])
 		return results	
 		
-#MPP_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, 3)
+##MPP_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, 3)

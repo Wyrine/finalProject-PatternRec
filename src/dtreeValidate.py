@@ -38,9 +38,8 @@ def dtree_Validate(dataName, grpName, folds, trans = None):
 		results = ev.buildConfusionMatrices(results)    
 		results = ev.normalizeConfMat(results)
 		results = ev.getAvgProbMatrix(results)
-		print("Dtree results:", results)
 		results = ev.rocData(results)
 		print("dtree Accuracy: %f" % results["Acc"])
 		return results  
 
-dtree_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 
+#dtree_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 
