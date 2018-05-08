@@ -40,3 +40,21 @@ def fuse(C1, C2):
 		else:
 				fuse[1][1] = 1
 		return fuse
+
+def bind(pred0, pred1, conf0, conf1):
+    '''
+        params
+            pred0: predictions from classifier 0
+            pred1: predictions from classifier 1
+            conf0: confusion matrix from classifier 0
+            conf1: confusion matrix from classifier 1
+        objective
+            uses naive bayes fusion to fuse the results of two classifiers
+        returns
+            the fused predictions
+    '''
+    fuser = fuse(conf0,conf1)
+    pred = []
+    for i in range(len(pred0))
+        pred.append(fuse[pred0[i]][pred1[i]])
+    return pred
