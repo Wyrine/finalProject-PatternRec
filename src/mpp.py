@@ -42,8 +42,12 @@ def MPP(tr, te, trLabels, case, priors = None):
 	#as well as the determinants
 	sigInv, dets = [], []
 	for s in sigs:
-		sigInv.append(np.linalg.inv(s))
-		dets.append(np.linalg.det(s))
+		if s.shape == ():
+			sigInv.append(np.array(1/s))
+			dets.append(np.array(s))
+		else:
+			sigInv.append(np.linalg.inv(s))
+			dets.append(np.linalg.det(s))
 
 	#1/(2*pi)
 	piConst = 1/(2 * math.pi)
@@ -57,7 +61,11 @@ def MPP(tr, te, trLabels, case, priors = None):
 			dist = samp - mu
 			#tmp is posterior probability for this class
 			tmp = piConst * 1 / np.sqrt(det) * pri
-			tmp *= math.exp(-mm(mm(dist.transpose(), sI), dist) / 2)
+			if sI.shape != ():
+				tmp *= math.exp(-mm(mm(dist.transpose(), sI), dist) / 2)
+			else:
+				tmp *= math.exp(-(dist* sI * dist) / 2)
+				
 			#tmp = pri * piConst * (1/ (det**0.5)) * math.exp(-0.5* mm(mm(dist.transpose(), sI),dist))
 			#if this class is the maximum, update choice and post
 			if tmp > post: choice, post = i, tmp

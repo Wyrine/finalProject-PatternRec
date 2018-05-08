@@ -5,7 +5,6 @@ def fld(tr, tr_class):
 	'''
 		returns the FLD projection matrix
 	'''
-	print(tr)
 	mat0 = []
 	mat1 = []
 	for x,xClass in zip(tr, tr_class):
@@ -16,8 +15,6 @@ def fld(tr, tr_class):
 
 	#compute scatter
 	
-	#print(mat0)
-	#print(mat1)
 	sInv = ((len(mat0)-1)  * np.cov(mat0, rowvar=False)) + ((len(mat1)-1) * np.cov(mat1, rowvar=False))
 	#print(sInv)
 	sInv = np.linalg.inv(sInv)

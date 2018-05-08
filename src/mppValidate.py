@@ -36,10 +36,8 @@ def MPP_Validate(dataName, grpName, folds, case = 3, priors = None, trans = None
 		if trans is not None:
 			if trans is fld:
 				tmp = trans(trainSet, trainLabels)
-				trainSet = np.matmul(trainSet, tmp)
-				trainSet = trainSet.reshape(-1,1).astype(np.float64)
-				testSet = np.matmul(testSet, tmp)
-				testSet = testSet.reshape(-1,1).astype(np.float64)
+				trainSet = np.matmul(trainSet, tmp).reshape(-1,1).astype(np.float64)
+				testSet = np.matmul(testSet, tmp).reshape(-1,1).astype(np.float64)
 			else:
 				tmp = trans(trainSet).transpose()
 				trainSet = np.matmul(trainSet, tmp)
@@ -56,4 +54,4 @@ def MPP_Validate(dataName, grpName, folds, case = 3, priors = None, trans = None
 	print(results["Acc"])
 	return results	
 		
-MPP_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, 3)
+MPP_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, 3,None, fld)

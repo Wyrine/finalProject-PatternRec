@@ -51,4 +51,4 @@ def bpnn_Validate(dataName, grpName, folds, trans = None):
 	print("bpnn Accuracy: %f" % (results["Acc"]))
 	return results  
 
-#bpnn_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 
+bpnn_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, pca) 
