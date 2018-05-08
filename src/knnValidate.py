@@ -56,4 +56,4 @@ def kNN_Validate(dataName, grpName, folds, k = 3, d = 2, trans = None):
 	print("%d-NN Accuracy: %f" % (k, results["Acc"]))
 	return results	
 
-kNN_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, 23, 2, fld)
+#kNN_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, 23, 2, fld)

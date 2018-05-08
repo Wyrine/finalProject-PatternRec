@@ -28,9 +28,10 @@ def varyMPP(trans):
 
 def varykNN():
 	roc = []
-	for k in [math.floor(math.sqrt(557)), 1,3,13]:
-		for d in [1, 3, 1000]:
-			roc.append(knnv(sys.argv[1], sys.argv[2], 23,k,d))
+	roc.append(knnv(sys.argv[1], sys.argv[2], 23,15,1))
+	#for k in [math.floor(math.sqrt(557)), 1,3,13]:
+	#	for d in [1, 3, 1000]:
+	#		roc.append(knnv(sys.argv[1], sys.argv[2], 23,k,d))
 	ev.toCSV("KNN", roc)
 
 def main():

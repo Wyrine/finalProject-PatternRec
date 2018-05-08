@@ -3,6 +3,7 @@ import numpy as np
 from standardize import standard
 from buildData import buildData as bd
 import dtree 
+from forest import randForest
 import validation as vd
 import evaluation as ev
 from fld import fld
@@ -45,6 +46,7 @@ def dtree_Validate(dataName, grpName, folds, trans = None):
 		trainSet, testSet = standard(trainSet, testSet)
 		#classify test set and add it to the results list
 		results.append((dtree.dtree(trainSet, testSet, trainLabels), testLabels))
+		r#esults.append((randForest(trainSet, testSet, trainLabels), testLabels))
 	results = ev.buildConfusionMatrices(results)
 	results = ev.normalizeConfMat(results)
 	results = ev.getAvgProbMatrix(results)
