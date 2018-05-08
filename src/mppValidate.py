@@ -40,11 +40,14 @@ def MPP_Validate(dataName, grpName, folds, case = 3, priors = None, trans = None
 		trainSet, testSet = standard(trainSet, testSet)
 		#classify test set and add it to the results list
 		results.append((MPP(trainSet, testSet, trainLabels, case, priors), testLabels))
+	
+	print(len(results))
 	results = ev.buildConfusionMatrices(results)	
+	print(len(results))
 	results = ev.normalizeConfMat(results)
 	results = ev.getAvgProbMatrix(results)
 	results = ev.rocData(results)
 	print(results["Acc"])
 	return results	
 		
-##MPP_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, 3)
+MPP_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, 3)

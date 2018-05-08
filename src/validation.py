@@ -17,8 +17,8 @@ class Validate:
 				tmp = line.replace("\n", "").split()
 				if self.folds is None:
 					self.folds = np.zeros( ( m, len(tmp)) )
-					self.folds[i, :] = np.array(tmp).astype(np.int)
-					i += 1
+				self.folds[i, :] = np.array(tmp).astype(np.int)
+				i += 1
 	def getTest(self, i):
 		""" get the test fold set which is index i """
 		return self.folds[i, :].astype(np.int).flatten()

@@ -38,7 +38,7 @@ def buildConfusionMatrices(results):
 		tmp = np.zeros((2,2), dtype = np.int)
 		for x, y in zip(ground, pred):
 			tmp[x, y] += 1
-			rv.append(tmp)
+		rv.append(tmp)
 	return rv
 
 def normalizeConfMat(conMat):
