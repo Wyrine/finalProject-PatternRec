@@ -5,6 +5,8 @@ from buildData import buildData as bd
 import bpnn 
 import validation as vd
 import evaluation as ev
+from fld import fld
+from pca import pca
 
 def bpnn_Validate(dataName, grpName, folds, trans = None): 
 	""" 
@@ -28,9 +30,16 @@ def bpnn_Validate(dataName, grpName, folds, trans = None):
 		trainSet, trainLabels = data[trainIndex, :], labels[trainIndex]
 		#if the data is to be transformed
 		if trans is not None:
-			tmp = trans(trainSet).transpose()
-			trainSet = np.matmul(trainSet, tmp)
-			testSet = np.matmul(testSet, tmp)
+			if trans is fld:
+				tmp = trans(trainSet, trainLabels)
+				trainSet = np.matmul(trainSet, tmp)
+				trainSet = trainSet.reshape(-1,1).astype(np.float64)
+				testSet = np.matmul(testSet, tmp)
+				testSet = testSet.reshape(-1,1).astype(np.float64)
+			else:
+				tmp = trans(trainSet).transpose()
+				trainSet = np.matmul(trainSet, tmp)
+				testSet = np.matmul(testSet, tmp)
 		#standardize the training and test set
 		trainSet, testSet = standard(trainSet, testSet)
 		#classify test set and add it to the results list

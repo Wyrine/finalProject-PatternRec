@@ -36,12 +36,14 @@ def kNN_Validate(dataName, grpName, folds, k = 3, d = 2, trans = None):
 		if trans is not None:
 			if trans is fld:
 				tmp = trans(trainSet, trainLabels)
-				trainSet = np.matmul(trainSet, tmp).reshape(-1, 1)
-				testSet = np.matmul(testSet, tmp).reshape(-1, 1)
+				trainSet = np.matmul(trainSet, tmp)
+				trainSet = trainSet.reshape(-1,1).astype(np.float64)
+				testSet = np.matmul(testSet, tmp)
+				testSet = testSet.reshape(-1,1).astype(np.float64)
 			else:
 				tmp = trans(trainSet).transpose()
-				trainSet = np.matmul(trainSet, tmp).reshape(-1, 1)
-				testSet = np.matmul(testSet, tmp).reshape(-1, 1)
+				trainSet = np.matmul(trainSet, tmp)
+				testSet = np.matmul(testSet, tmp)
 		#standardize the training and test set
 		trainSet, testSet = standard(trainSet, testSet)
 		#classify test set and add it to the results list

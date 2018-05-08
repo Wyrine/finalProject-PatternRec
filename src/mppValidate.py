@@ -5,7 +5,8 @@ from buildData import buildData as bd
 from mpp import MPP
 import validation as vd
 import evaluation as ev
-import sys
+from pca import pca
+from fld import fld
 
 def MPP_Validate(dataName, grpName, folds, case = 3, priors = None, trans = None):
 	"""
@@ -33,17 +34,22 @@ def MPP_Validate(dataName, grpName, folds, case = 3, priors = None, trans = None
 		trainSet, trainLabels = data[trainIndex, :], labels[trainIndex]
 		#if the data is to be transformed
 		if trans is not None:
-			tmp = trans(trainSet).transpose()
-			trainSet = np.matmul(trainSet, tmp)
-			testSet = np.matmul(testSet, tmp)
+			if trans is fld:
+				tmp = trans(trainSet, trainLabels)
+				trainSet = np.matmul(trainSet, tmp)
+				trainSet = trainSet.reshape(-1,1).astype(np.float64)
+				testSet = np.matmul(testSet, tmp)
+				testSet = testSet.reshape(-1,1).astype(np.float64)
+			else:
+				tmp = trans(trainSet).transpose()
+				trainSet = np.matmul(trainSet, tmp)
+				testSet = np.matmul(testSet, tmp)
 		#standardize the training and test set
 		trainSet, testSet = standard(trainSet, testSet)
 		#classify test set and add it to the results list
 		results.append((MPP(trainSet, testSet, trainLabels, case, priors), testLabels))
 	
-	print(len(results))
 	results = ev.buildConfusionMatrices(results)	
-	print(len(results))
 	results = ev.normalizeConfMat(results)
 	results = ev.getAvgProbMatrix(results)
 	results = ev.rocData(results)

@@ -6,8 +6,9 @@ import km
 import validation as vd
 import evaluation as ev
 from fld import fld
+from pca import pca
 
-def km_Validate(dataName, grpName, folds): 
+def km_Validate(dataName, grpName, folds, trans = None): 
 	""" 
 		params: 
 			dataName := file with the data set
@@ -26,6 +27,18 @@ def km_Validate(dataName, grpName, folds):
 		testSet, testLabels = data[testIndex, :], labels[testIndex]
 		#build the train set and training labels
 		trainSet, trainLabels = data[trainIndex, :], labels[trainIndex]
+		#transformation
+		if trans is not None:
+			if trans is fld:
+				tmp = trans(trainSet, trainLabels)
+				trainSet = np.matmul(trainSet, tmp)
+				trainSet = trainSet.reshape(-1,1).astype(np.float64)
+				testSet = np.matmul(testSet, tmp)
+				testSet = testSet.reshape(-1,1).astype(np.float64)
+			else:
+				tmp = trans(trainSet).transpose()
+				trainSet = np.matmul(trainSet, tmp)
+				testSet = np.matmul(testSet, tmp)
 		#standardize the training and test set
 		trainSet, testSet = standard(trainSet, testSet)
 		#classify test set and add it to the results list
