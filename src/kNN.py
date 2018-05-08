@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3
 import numpy as np
 import operator as op
+import sys
 
 def minkowski(tr, te, d):
 		"""
@@ -29,6 +30,7 @@ def kNN(train, test, trainLabels, k, d = 2):
 		rv = []
 		i, tot = 0, len(test)
 		for te in test:
+				print("Iteration %d of %d" % (i, tot))
 				rv.append(kNN_Classify(train, te, trainLabels, k, d))
 				i += 1
 		return rv
@@ -37,23 +39,14 @@ def kNN_Classify(train, te, trainLabels, k, d):
 		"""
 				classifies a test sample based on the k nearest neighbors
 		"""
-		kNeighbs = []
+		dists = []
 		#initialize the first k samples in the training set in the
 		#training set
-		for tr, c in zip(train[:k, :], trainLabels[:k]):
-				kNeighbs.append((minkowski(tr, te, d), c))
-		kNeighbs.sort(key = op.itemgetter(0))
-		
-		#iterate through the remaining training samples
-		for tr, c in zip(train[k:, :], trainLabels[k:]):
-				#get the distance between the current tr and te
-				dist = minkowski(tr, te, d)
-				if dist < kNeighbs[-1][0]:
-						#update the largest distance with the new, smaller, distance
-						kNeighbs[-1] = (dist, c)
-						#sort the array
-						kNeighbs.sort(key = op.itemgetter(0))
-		return neighborVoting(kNeighbs)
+
+		for tr, c in zip(train, trainLabels):
+				dists.append((minkowski(tr, te, d), c))
+		dists.sort(key=op.itemgetter(0))
+		return neighborVoting(dists[:k])
 
 def neighborVoting(kNeighbs):
 		"""

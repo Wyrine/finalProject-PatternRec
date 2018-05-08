@@ -1,10 +1,11 @@
-#!/usr/local/bin/python2
+#!/usr/local/bin/python3
 import numpy as np
 from standardize import standard
 from buildData import buildData as bd
 import kNN as knn
 import validation as vd
 import evaluation as ev
+from fld import fld
 
 def kNN_Validate(dataName, grpName, folds, k = 3, d = 2, trans = None):
 		"""
@@ -32,8 +33,11 @@ def kNN_Validate(dataName, grpName, folds, k = 3, d = 2, trans = None):
 				trainSet, trainLabels = data[trainIndex, :], labels[trainIndex]
 				#if the data is to be transformed
 				if trans is not None:
-						tmp = trans(trainSet).transpose()
-						trainSet = np.matul(trainSet, tmp)
+						if trans == fld:
+								tmp = trans(trainSet, trainLabels)
+						else:
+								tmp = trans(trainSet).transpose()
+						trainSet = np.matmul(trainSet, tmp)
 						testSet = np.matmul(testSet, tmp)
 				#standardize the training and test set
 				trainSet, testSet = standard(trainSet, testSet)
@@ -42,6 +46,7 @@ def kNN_Validate(dataName, grpName, folds, k = 3, d = 2, trans = None):
 		results = ev.buildConfusionMatrices(results)	
 		results = ev.normalizeConfMat(results)
 		results = ev.getAvgProbMatrix(results)
+		print("knn results", results)
 		results = ev.rocData(results)
 		print("%d-NN Accuracy: %f" % (k, results["Acc"]))
 		return results	

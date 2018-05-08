@@ -38,6 +38,7 @@ def bpnn_Validate(dataName, grpName, folds, trans = None):
 		results = ev.buildConfusionMatrices(results)    
 		results = ev.normalizeConfMat(results)
 		results = ev.getAvgProbMatrix(results)
+		print("bpnn con", results)
 		results = ev.rocData(results)
 		print("bpnn Accuracy: %f" % (results["Acc"]))
 		return results  

@@ -2,14 +2,6 @@
 import numpy as np
 import math
 
-def getMean(x):
-		"""
-				get the mean of the sample
-		"""
-		tmp = x[0, :]
-		for c in x[1:, :]: tmp = tmp + c
-		return tmp / len(x)
-
 def MPP(tr, te, trLabels, case, priors = None):
 		""" takes the training set, testing set,
 				training labels, case number {1,2,3},
@@ -24,7 +16,7 @@ def MPP(tr, te, trLabels, case, priors = None):
 		means, sigs = [], []
 		#calculating mean and covariance matrices for each class
 		for c in classes:
-				means.append(getMean(np.array(c)))
+				means.append(np.mean(c, axis=0))
 				sigs.append(np.cov(c, rowvar=False))
 		#if the prior was not provided, calculate it based on training set
 		if priors is None:
@@ -60,11 +52,13 @@ def MPP(tr, te, trLabels, case, priors = None):
 				#initializing the posterior
 				post, choice = 0, 0
 				#getting the mean, determinant, covInverse, and class for each loop
-				for mu, det, sI, i in zip(means, dets, sigInv, [0,1]):
+				for pri, mu, det, sI, i in zip(priors, means, dets, sigInv, [0,1]):
 						#x - mu
 						dist = samp - mu
 						#tmp is posterior probability for this class
-						tmp = piConst * (1/ (det**0.5)) * math.exp(-0.5* mm(mm(dist, sI),dist.transpose()))
+						tmp = piConst * 1 / np.sqrt(det) * pri
+						tmp *= math.exp(-mm(mm(dist.transpose(), sI), dist) / 2)
+						#tmp = pri * piConst * (1/ (det**0.5)) * math.exp(-0.5* mm(mm(dist.transpose(), sI),dist))
 						#if this class is the maximum, update choice and post
 						if tmp > post: choice, post = i, tmp
 				#add the choice to the return values

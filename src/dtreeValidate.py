@@ -5,7 +5,6 @@ from buildData import buildData as bd
 import dtree 
 import validation as vd
 import evaluation as ev
-from fld import fld
 
 def dtree_Validate(dataName, grpName, folds, trans = None): 
 		""" 
@@ -39,6 +38,7 @@ def dtree_Validate(dataName, grpName, folds, trans = None):
 		results = ev.buildConfusionMatrices(results)    
 		results = ev.normalizeConfMat(results)
 		results = ev.getAvgProbMatrix(results)
+		print("Dtree results:", results)
 		results = ev.rocData(results)
 		print("dtree Accuracy: %f" % results["Acc"])
 		return results  

@@ -36,7 +36,7 @@ def buildConfusionMatrices(results):
 		rv = []
 		for pred, ground in results:
 				tmp = np.zeros((2,2), dtype = np.int)
-				for x, y in zip(pred, ground):
+				for x, y in zip(ground, pred):
 						tmp[x, y] += 1
 				rv.append(tmp)
 		return rv
@@ -64,7 +64,7 @@ def toCSV(fname, roc):
 		#directory path
 		dire = "./"	
 		#opens dire/fname.csv
-		with open (dire + fname + ".csv") as fout:
+		with open (dire + fname + ".csv", "w") as fout:
 				#writes header
 				fout.write("TP,TN,FP,FN,Accuracy,Sensitivity(Recall),Specificity,Precision\n");
 				for d in roc:
