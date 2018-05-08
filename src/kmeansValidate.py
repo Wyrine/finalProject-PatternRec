@@ -36,4 +36,4 @@ def km_Validate(dataName, grpName, folds):
 	print("KM+MD Accuracy: %f" % (ev.rocData(tmp)["Acc"]))
 	return results  
 
-#km_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 
+km_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 
