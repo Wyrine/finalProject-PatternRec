@@ -5,6 +5,8 @@ from buildData import buildData as bd
 import dtree 
 import validation as vd
 import evaluation as ev
+from fld import fld
+from pca import pca
 
 def dtree_Validate(dataName, grpName, folds, trans = None): 
 	""" 
@@ -28,9 +30,14 @@ def dtree_Validate(dataName, grpName, folds, trans = None):
 		trainSet, trainLabels = data[trainIndex, :], labels[trainIndex]
 		#if the data is to be transformed
 		if trans is not None:
-			tmp = trans(trainSet).transpose()
+			if trans is fld:
+				tmp = trans(trainSet, trainLabels)
+			else:
+				tmp = trans(trainSet).transpose()
 			trainSet = np.matmul(trainSet, tmp)
+			trainSet = trainSet.reshape(-1,1).astype(np.float64)
 			testSet = np.matmul(testSet, tmp)
+			testSet = testSet.reshape(-1,1).astype(np.float64)
 		#standardize the training and test set
 		trainSet, testSet = standard(trainSet, testSet)
 		#classify test set and add it to the results list
@@ -42,4 +49,4 @@ def dtree_Validate(dataName, grpName, folds, trans = None):
 	print("dtree Accuracy: %f" % results["Acc"])
 	return results  
 
-#dtree_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 
+dtree_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, fld) 

@@ -62,7 +62,7 @@ def toCSV(fname, roc):
 		returns: None
 	"""
 	#directory path
-	dire = "./"	
+	dire = "../output/"	
 	#opens dire/fname.csv
 	with open (dire + fname + ".csv", "w") as fout:
 		#writes header

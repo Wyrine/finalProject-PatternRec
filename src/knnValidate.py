@@ -6,6 +6,7 @@ import kNN as knn
 import validation as vd
 import evaluation as ev
 from fld import fld
+from pca import pca
 
 def kNN_Validate(dataName, grpName, folds, k = 3, d = 2, trans = None):
 	"""
@@ -24,25 +25,27 @@ def kNN_Validate(dataName, grpName, folds, k = 3, d = 2, trans = None):
 	data, labels = bd(dataName)
 	results = [] #stores tuples: (list_predicted, list_groundTruth)
 	for i in range(valid.getFoldCount()):
-			print("kNN iteration %d" % i)
-			#get the train and test indices of the data set
-			testIndex, trainIndex = valid.getTest(i), valid.getTrain(i)
-			#build the test set and test labels
-			testSet, testLabels = data[testIndex, :], labels[testIndex]
-			#build the train set and training labels
-			trainSet, trainLabels = data[trainIndex, :], labels[trainIndex]
-			#if the data is to be transformed
-			if trans is not None:
-					if trans == fld:
-							tmp = trans(trainSet, trainLabels)
-					else:
-							tmp = trans(trainSet).transpose()
-					trainSet = np.matmul(trainSet, tmp)
-					testSet = np.matmul(testSet, tmp)
-			#standardize the training and test set
-			trainSet, testSet = standard(trainSet, testSet)
-			#classify test set and add it to the results list
-			results.append((knn.kNN(trainSet, testSet, trainLabels, k, d), testLabels))
+		print("kNN iteration %d" % i)
+		#get the train and test indices of the data set
+		testIndex, trainIndex = valid.getTest(i), valid.getTrain(i)
+		#build the test set and test labels
+		testSet, testLabels = data[testIndex, :], labels[testIndex]
+		#build the train set and training labels
+		trainSet, trainLabels = data[trainIndex, :], labels[trainIndex]
+		#if the data is to be transformed
+		if trans is not None:
+			if trans is fld:
+				tmp = trans(trainSet, trainLabels)
+				trainSet = np.matmul(trainSet, tmp).reshape(-1, 1)
+				testSet = np.matmul(testSet, tmp).reshape(-1, 1)
+			else:
+				tmp = trans(trainSet).transpose()
+				trainSet = np.matmul(trainSet, tmp).reshape(-1, 1)
+				testSet = np.matmul(testSet, tmp).reshape(-1, 1)
+		#standardize the training and test set
+		trainSet, testSet = standard(trainSet, testSet)
+		#classify test set and add it to the results list
+		results.append((knn.kNN(trainSet, testSet, trainLabels, k, d), testLabels))
 	results = ev.buildConfusionMatrices(results)	
 	results = ev.normalizeConfMat(results)
 	results = ev.getAvgProbMatrix(results)
@@ -51,4 +54,4 @@ def kNN_Validate(dataName, grpName, folds, k = 3, d = 2, trans = None):
 	print("%d-NN Accuracy: %f" % (k, results["Acc"]))
 	return results	
 
-#kNN_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23)
+kNN_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23, 23, 2, fld)

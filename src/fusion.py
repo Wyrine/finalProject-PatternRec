@@ -55,6 +55,6 @@ def bind(pred0, pred1, conf0, conf1):
 	'''
 	fuser = fuse(conf0,conf1)
 	pred = []
-	for i in range(len(pred0)):
-		pred.append(fuse[pred0[i]][pred1[i]])
+	for x, y in zip(pred0, pred1):
+		pred.append(fuser[x][y])
 	return pred

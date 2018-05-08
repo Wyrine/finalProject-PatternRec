@@ -61,6 +61,6 @@ def MPP(tr, te, trLabels, case, priors = None):
 			#tmp = pri * piConst * (1/ (det**0.5)) * math.exp(-0.5* mm(mm(dist.transpose(), sI),dist))
 			#if this class is the maximum, update choice and post
 			if tmp > post: choice, post = i, tmp
-				#add the choice to the return values
-				rv.append(choice)
+		#add the choice to the return values
+		rv.append(choice)
 	return rv
