@@ -1,7 +1,7 @@
 import sys
 import numpy as np
 
-def euc(A, B, n = 3):
+def euc(A, B, n = 10):
 		dist = 0
 		for i in range(n):
 				dist += (A[i] - B[i]) ** 2
@@ -19,7 +19,7 @@ def kmeans(k=2, dat, col):
         the membership of each the samples passed in
     '''
     #assume standardized values
-    means = np.random.uniform(-2,2,k*col) #cluster centers
+    means = np.random.uniform(-2,2,k*col).reshape([k,col]) #cluster centers
     membership = np.zeros(len(dat))
 
     for i in range(0, 50):
@@ -47,13 +47,17 @@ def kmeans(k=2, dat, col):
 		    tmp += dat[j]
 	    if count != 0: #if no members in cluster, pass
 		means[m] = tmp / count
-
-    out = []
-    for i in range(len(membership)):
-        out.append(means[int(membership[i])])
-    return out
+    return means
 
 def cluster(tr, te, tr_class):
-    pred = kmeans(2,tr,len(data[0,:]))
-    print pred
-    print tr_class
+    means = kmeans(2,tr,len(data[0,:]))
+    pred = np.zeros(len(tr_class))
+
+    for i in range(len(pred))
+        if( euc(te[i],means[0]) < euc(te[i],means[1]) ):
+            pred[i] = 0
+        else
+            pred[i] = 1
+    return pred
+
+    
