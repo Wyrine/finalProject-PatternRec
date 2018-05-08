@@ -2,13 +2,16 @@
 import numpy as np
 from standardize import standard
 from buildData import buildData as bd
-import bpnn 
+import bpnn
+from mpp import MPP as mpp
+from dtree import dtree as tree
 import validation as vd
 import evaluation as ev
 from fld import fld
 from pca import pca
+from fusion import *
 
-def bpnn_Validate(dataName, grpName, folds, trans = None): 
+def bpnn_mpp_fusion(dataName, grpName, folds, trans = None): 
 	""" 
 		params: 
 			dataName := file with the data set
@@ -43,12 +46,16 @@ def bpnn_Validate(dataName, grpName, folds, trans = None):
 		#standardize the training and test set
 		trainSet, testSet = standard(trainSet, testSet)
 		#classify test set and add it to the results list
-		results.append((bpnn.nn(trainSet, testSet, trainLabels), testLabels))
+
+		pred0 = bpnn.nn(trainSet, testSet, trainLabels)
+		pred1 = mpp(trainSet, testSet, trainLabels,2)
+		pred = bind(pred0,pred1,testLabels)
+		results.append((np.array(pred).astype(np.int), testLabels))
 	results = ev.buildConfusionMatrices(results)    
 	results = ev.normalizeConfMat(results)
 	results = ev.getAvgProbMatrix(results)
 	results = ev.rocData(results)
-	print("bpnn Accuracy: %f" % (results["Acc"]))
+	print("bpnn_mpp2_fusion Accuracy: %f" % (results["Acc"]))
 	return results  
 
-bpnn_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 
+bpnn_mpp_fusion("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 
