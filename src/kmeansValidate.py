@@ -43,10 +43,11 @@ def km_Validate(dataName, grpName, folds, trans = None):
 		trainSet, testSet = standard(trainSet, testSet)
 		#classify test set and add it to the results list
 		results.append((km.cluster(trainSet, testSet, trainLabels), testLabels))
-	tmp = ev.buildConfusionMatrices(results)    
-	tmp = ev.normalizeConfMat(tmp)
-	tmp = ev.getAvgProbMatrix(tmp)
-	print("KM+MD Accuracy: %f" % (ev.rocData(tmp)["Acc"]))
+	results = ev.buildConfusionMatrices(results)    
+	results = ev.normalizeConfMat(results)
+	results = ev.getAvgProbMatrix(results)
+	print(results)
+	print("KM+MD Accuracy: %f" % results["Acc"]))
 	return results  
 
 km_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 
