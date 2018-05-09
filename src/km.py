@@ -23,7 +23,7 @@ def kmeans(k, dat, col):
 	means = np.random.uniform(-2,2,k*col).reshape([k,col]) #cluster centers
 	membership = np.zeros(len(dat))
 
-	for i in range(0, 5):
+	for i in range(0, 50):
 		#for each point, assign to nearest cluster
 		print( 'iter: ', i)
 		for j in range(0, len(dat)):

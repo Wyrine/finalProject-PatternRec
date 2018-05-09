@@ -47,7 +47,8 @@ def km_Validate(dataName, grpName, folds, trans = None):
 	results = ev.normalizeConfMat(results)
 	results = ev.getAvgProbMatrix(results)
 	print(results)
-	print("KM+MD Accuracy: %f" % results["Acc"]))
+	results = ev.rocData(results)
+	print("KM+MD Accuracy: %f" % results["Acc"])
 	return results  
 
 km_Validate("../data/EEG_dropcat.csv", "../data/folds.grp", 23) 
